@@ -1,25 +1,18 @@
+const {
+  createItem,
+  getAllItems,
+  getItemById,
+  deleteItem,
+} = require("./helpers");
 const { Book } = require("../models");
 
-exports.create = async (req, res) => {
-  try {
-    const newBook = await Book.create(req.body);
-    res.status(201).json(newBook);
-  } catch (err) {
-    res.status(404).json(err.message);
-  }
-};
+exports.createBook = (req, res) => createItem(res, "book", req.body);
 
-exports.getAll = async (_, res) => {
-  const bookList = await Book.findAll();
-  res.status(200).json(bookList);
-};
+exports.getAllBooks = (_, res) => getAllItems(res, "book");
 
-exports.getById = async (req, res) => {
-  const { id } = req.params;
-  const selectedBook = await Book.findByPk(id);
+exports.getBookById = (req, res) => getItemById(res, "book", req.params);
 
-  res.status(200).json(selectedBook);
-};
+exports.deleteBookById = (req, res) => deleteItem(res, "book", req.params.id);
 
 exports.getByTitle = async (req, res) => {
   const searchTitle = req.params.title;

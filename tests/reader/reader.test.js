@@ -21,14 +21,12 @@ describe("/reader", () => {
         const response = await request(app).post("/reader").send({
           name: "Elizabeth Bennet",
           email: "future_ms_darcy@gmail.com",
-          password: "passwor",
+          password: "password",
         });
 
         const newReaderRecord = await Reader.findByPk(response.body.id, {
           raw: true,
         });
-
-        console.log(response.password.ValidationError);
 
         expect(response.body.name).to.equal("Elizabeth Bennet");
         expect(newReaderRecord.name).to.equal("Elizabeth Bennet");
@@ -45,7 +43,7 @@ describe("/reader", () => {
       readers = await Promise.all([
         Reader.create({
           name: "Elizabeth Bennet",
-          email: "future_ms_darcy",
+          email: "future_ms_darcy@gmail.com",
           password: "password",
         }),
         Reader.create({

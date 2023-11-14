@@ -4,10 +4,10 @@ const readerController = require("../controllers/reader");
 const readerRouter = express.Router();
 
 readerRouter
-  .post("/", readerController.create)
-  .get("/", readerController.getAll)
-  .get("/:id", readerController.getById)
-  .patch("/:id", readerController.updateEmail)
-  .delete("/:id", readerController.delete);
+  .post("/", readerController.createReader)
+  .get("/", readerController.getAllReaders)
+  .get("/:id", readerController.getReaderById)
+  .patch("/:id", readerController.updateReaderEmail)
+  .delete("/:id", readerController.deleteReaderById);
 
 module.exports = readerRouter;
