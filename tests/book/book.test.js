@@ -25,9 +25,9 @@ describe("/book", () => {
           ISBN: "987654321",
         });
 
-        const newBookRecord = await Book.findByPk(response.body.id, {
-          raw: true,
-        });
+        // const newBookRecord = await Book.findByPk(response.body.id, {
+        //   raw: true,
+        // });
 
         expect(response.body.title).to.equal("Northern Lights");
         expect(response.body.author).to.equal("Phillip Pullman");

@@ -13,12 +13,22 @@ const get404error = (model) => ({
   error: `The ${model} could not be found.`,
 });
 
+const deletePassword = (obj) => {
+  if (obj.password) {
+    delete obj.password;
+  }
+
+  return obj;
+};
+
 exports.createItem = async (res, model, item) => {
   const Model = getModel(model);
   try {
     const newItem = await Model.create(item);
 
-    res.status(201).json(newItem);
+    const newItemNoPassword = deletePassword(newItem.dataValues);
+
+    res.status(201).json(newItemNoPassword);
   } catch (err) {
     res.status(400).json(err);
   }
@@ -27,7 +37,10 @@ exports.createItem = async (res, model, item) => {
 exports.getAllItems = async (res, model) => {
   const Model = getModel(model);
   const itemList = await Model.findAll();
-  res.status(200).json(itemList);
+  const itemsNoPassword = itemList.map((item) => {
+    return deletePassword(item.get());
+  });
+  res.status(200).json(itemsNoPassword);
 };
 
 exports.getItemById = async (res, model, item) => {
@@ -39,7 +52,8 @@ exports.getItemById = async (res, model, item) => {
   if (!selectedItem) {
     res.status(404).json(get404error(model));
   } else {
-    res.status(200).json(selectedItem);
+    const itemNoPassword = deletePassword(selectedItem.dataValues);
+    res.status(200).json(itemNoPassword);
   }
 };
 
@@ -52,7 +66,8 @@ exports.updateItem = async (res, model, item, id) => {
     res.status(404).json(get404error(model));
   } else {
     const updatedItem = await Model.findByPk(id);
-    res.status(200).json(updatedItem);
+    const updatedItemNoPassword = deletePassword(updatedItem.dataValues);
+    res.status(200).json(updatedItemNoPassword);
   }
 };
 

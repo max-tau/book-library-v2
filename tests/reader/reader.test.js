@@ -32,6 +32,7 @@ describe("/reader", () => {
         expect(newReaderRecord.name).to.equal("Elizabeth Bennet");
         expect(newReaderRecord.email).to.equal("future_ms_darcy@gmail.com");
         expect(response.status).to.equal(201);
+        expect(response.body.password).to.not.exist;
       });
     });
   });
@@ -73,6 +74,12 @@ describe("/reader", () => {
           expect(reader.email).to.equal(expected.email);
         });
       });
+
+      it("does not return readers passwords", async () => {
+        const response = await request(app).get("/reader");
+
+        response.body.forEach((reader) => expect(reader.password).to.not.exist);
+      });
     });
 
     describe("GET /reader/:id", () => {
@@ -91,6 +98,12 @@ describe("/reader", () => {
         expect(response.status).to.equal(404);
         expect(response.body.error).to.equal("The reader could not be found.");
       });
+
+      it("does not return readers passwords", async () => {
+        const response = await request(app).get("/reader");
+
+        response.body.forEach((reader) => expect(reader.password).to.not.exist);
+      });
     });
 
     describe("PATCH /reader/:id", () => {
@@ -105,6 +118,7 @@ describe("/reader", () => {
 
         expect(response.status).to.equal(200);
         expect(updatedReaderRecord.email).to.equal("miss_e_bennet@gmail.com");
+        expect(response.body.password).to.not.exist;
       });
 
       it("returns a 404 if the reader does not exist", async () => {
