@@ -6,7 +6,9 @@ const {
 } = require("./helpers");
 const { Book } = require("../models");
 
-exports.createBook = (req, res) => createItem(res, "book", req.body);
+exports.createBook = (req, res) => {
+  createItem(res, "book", req.body);
+};
 
 exports.getAllBooks = (_, res) => getAllItems(res, "book");
 

@@ -1,9 +1,10 @@
-const { Book, Reader } = require("../models");
+const { Book, Reader, Genre } = require("../models");
 
 const getModel = (model) => {
   const models = {
     book: Book,
     reader: Reader,
+    genre: Genre,
   };
 
   return models[model];
@@ -43,11 +44,18 @@ exports.getAllItems = async (res, model) => {
   res.status(200).json(itemsNoPassword);
 };
 
+exports.getAllBooks = async (res, model, itemId) => {
+  const Model = getModel(model);
+
+  const items = await Model.findAll({ where: { id: itemId }, include: Book });
+  res.status(200).json(items);
+};
+
 exports.getItemById = async (res, model, item) => {
   const Model = getModel(model);
   const { id } = item;
 
-  const selectedItem = await Model.findByPk(id);
+  const selectedItem = await Model.findByPk(id, { include: Genre });
 
   if (!selectedItem) {
     res.status(404).json(get404error(model));
